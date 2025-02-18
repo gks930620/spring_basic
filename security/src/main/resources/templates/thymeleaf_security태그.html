@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<!-- thymeleaf의 th 태그와  security의 sec 태그 사용가능  -->
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Security Test</title>
+</head>
+<body>
+<h1>Spring Security와 Thymeleaf 테스트</h1>
+
+<!-- 로그인한 사용자 이름 표시 -->
+<!--Controller에서 Autehntcation authentication의 getName 값.  -->
+<p>현재 사용자: <span sec:authentication="name"></span></p>
+<!--  @AutehntcationPrincipal CustomUserDetails userDetails 의 값을 사용하고 싶다면 Controller에서 model에 직접 담아야 함. -->
+
+
+<!-- 역할(ROLE) 출력 -->
+<p>권한: <span sec:authentication="authorities"></span></p>
+
+<!-- 로그인 상태 확인 -->
+<div sec:authorize="isAuthenticated()">
+    <p>로그인한 사용자만 볼 수 있습니다.</p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+</div>
+
+<!-- 비로그인 상태 확인 -->
+<div sec:authorize="isAnonymous()">
+    <p>로그인하지 않은 사용자입니다.</p>
+    <a th:href="@{/login}">로그인</a>
+</div>
+
+<!-- 특정 권한 확인 -->
+<div sec:authorize="hasAuthority('ADMIN')">
+    <p>관리자 전용 페이지</p>
+</div>
+
+</body>
+</html>
