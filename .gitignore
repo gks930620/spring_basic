@@ -1,0 +1,75 @@
+# 기본적인 IntelliJ IDEA 설정 파일 및 워크스페이스 관련 파일 무시
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Gradle 관련 파일 무시
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+**/build/
+**/out/
+
+# Maven 관련 파일 무시
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# 로그 파일 및 캐시 파일 무시
+*.log
+*.log.*
+logs/
+debug.log
+hs_err_pid*
+*.swp
+*.swo
+*.swn
+*.bak
+
+# OS 관련 파일 무시
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 환경 변수 및 설정 파일 무시 (OAuth2, JWT 관련)
+.env
+*.properties
+*.yml
+*.yaml
+!src/main/resources/application.yml
+!src/main/resources/application.yaml
+!src/main/resources/application.properties
+secret/
+config/
+private/
+credentials/
+
+# JPA QueryDSL 관련 빌드 파일 무시
+**/generated/
+**/build/generated/
+**/build/generated-sources/
+**/build/generated-test-sources/
+
+# IDE에서 생성하는 파일 무시
+*.class
+*.war
+*.jar
+*.ear
+*.javadoc
+!src/main/resources/static/
+
+# Node.js 및 Frontend 관련 설정 무시 (혹시 사용할 경우)
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+.vscode/
+dist/
