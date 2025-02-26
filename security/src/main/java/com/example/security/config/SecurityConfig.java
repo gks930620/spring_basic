@@ -1,5 +1,6 @@
 package com.example.security.config;
 
+import com.example.security.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+    private final CustomUserDetailsService customUserDetailsService;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain1(HttpSecurity http) throws Exception{
         http
@@ -36,12 +43,16 @@ public class SecurityConfig {
         );
 
 
-        http.formLogin((auth) -> auth.loginPage("/login")   // login페이지 URL 지정.  @RequestMapping("/login")을 만들어야한다.  => login.html
+        http.formLogin((auth) -> auth
+            .loginPage("/login")   // login페이지 URL 지정.  @RequestMapping("/login")을 만들어야한다.  => login.html
             .loginProcessingUrl("/loginProc")   // login.html에서  form태그의 action URL이  /loginProc여야한다.
                                                 // @RequestMapping("/loginProc")는 없다. login과정은 security가 하기때문.
             .defaultSuccessUrl("/")             // 로그인 성공 후 redirect 되는 URL
+            .failureUrl("/login?error=true") // 로그인 실패 시 다시 로그인 페이지로.  기본값이 /login?error 지만  명시적으로.
             .permitAll()
         );
+
+        http.userDetailsService(customUserDetailsService); //명시적으로 등록
 
         http.logout((auth) -> auth.logoutUrl("/logout")   //   /logout으로 요청하면 logout이 된다.  @RM은 없다. 로그아웃도 security가 한다.
             .logoutSuccessUrl("/"));                     //    로그아웃 성공 후 /로 redirect
