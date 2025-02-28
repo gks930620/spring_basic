@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+로그인페이지입니다.
+
+<form action="/loginProc" method="post" name="loginForm">              <!--  securityConfig의  loginProcessingUrl("/loginProc")    -->
+    <input id="username" type="text" name="username" placeholder="id(username)"/>   <!-- name이 반드시 username이어야한다.  -->
+    <input id="password" type="password" name="password" placeholder="password"/>  <!-- name이 반드시 password이어야한다.  -->
+
+    <input id="nickname" type="text" name="username" placeholder="nickname"/>
+    <input id="email" type="password" name="password" placeholder="email"/>
+
+    <button type="submit" >로그인</button>
+</form>
+
+<br>
+<!-- 카카오 로그인 버튼 -->
+<a href="/oauth2/authorization/kakao">
+    <img src="/images/kakao_login.png" alt="카카오 로그인">
+</a>
+
+
+
+</body>
+</html>
