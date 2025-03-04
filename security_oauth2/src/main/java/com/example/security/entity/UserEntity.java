@@ -20,6 +20,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;   //JPA 기본 ID Long 
 
+    private String provider;  // Oauth2Provider 이름.
 
     @Column(unique = true)
     private String username;   //spring이 entity의 필드랑 파라미터를 비교하는건 아님.   security에서 username이 기본이지만, 사용자입장에선 ID
@@ -28,7 +29,6 @@ public class UserEntity {
     private String email;
     private String nickname;
 
-    private String provider;  // Oauth2Provider 이름.
 
 
     private List<String> roles=new ArrayList<>();
