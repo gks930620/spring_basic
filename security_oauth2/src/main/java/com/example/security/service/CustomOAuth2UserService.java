@@ -28,9 +28,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         OAuthProvider currentLoginProvider=OAuthProvider.from(registrationId); //GOOGLE,KAKAO   ENUM
         UserEntity userEntity = currentLoginProvider.toUserEntity(attributes);  //oauth2사용자의 user정보
-
-        userRepository.save(userEntity);  //유저정보 저장
-
+        if(userRepository.findByUsername(userEntity.getUsername()) ==null){  //처음로그인
+            userRepository.save(userEntity);  //유저정보 저장
+        }
 
         return new CustomUserAccount(userEntity, attributes);
 
