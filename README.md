@@ -1,1 +1,1 @@
-# spring_basic 기본사항
+# spring_basic 기본프로젝트들모음
