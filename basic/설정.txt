@@ -1,0 +1,12 @@
+기본 : web,jdbc,h2,  jpa,  thymeleaf, devtools(정적자원재시작), lombok까지 있는 상태
+
+1.프로젝트 폴더 이름 변경하기
+  settings.gradle에서  rootproject이름 변경하기
+2.인텔리제이의 경우 프로젝트이름, module이름 변경하기
+
+
+정적자원재시작
+thymeleaf html변경 후 저장만할게 아니라 Ctrl + Shift + F9로 recompile 해줘야함. (첫번째는 좀 느림)
+Settings- advancedSetting,   Build -Complier 부분 옵션 변경해주는거 있음
+서버 실행할 떄 LiveReload server is running on port 35729 가 있다면 liveReload기능은 잘 적용중이라고 보면됨
+
