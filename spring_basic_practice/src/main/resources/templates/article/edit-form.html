@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>게시글 수정</title>
+  <meta charset="UTF-8">
+  <script>
+    function addFileInput() {
+      const fileInputs = document.getElementById("fileInputs");
+      const newInput = document.createElement("div");
+      newInput.innerHTML = `
+        <input type="file" name="files" />
+        <button type="button" onclick="this.parentElement.remove()">삭제</button>
+      `;
+      fileInputs.appendChild(newInput);
+    }
+  </script>
+</head>
+<body>
+
+<h1>게시글 수정</h1>
+
+<form th:action="@{/article/edit}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="id" th:value="${article.id}"/>
+
+  <div>
+    <label>제목</label><br>
+    <input type="text" name="title" th:value="${article.title}" required/>
+  </div>
+  <br>
+  <div>
+    <label>내용</label><br>
+    <textarea name="content" rows="5" cols="50" th:text="${article.content}" required></textarea>
+  </div>
+  <br>
+
+  <div>
+    <label>기존 첨부파일</label><br/>
+    <ul>
+      <li th:each="file : ${article.attaches}">
+        <a th:href="@{'/files/' + ${file.id} + '/download'}"
+           th:text="${file.originalFileName}"></a>
+
+        <input type="checkbox" name="deleteFileIds" th:value="${file.id}"/> 삭제
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <label>첨부파일 추가</label>
+    <button type="button" onclick="addFileInput()">파일 추가</button>
+    <div id="fileInputs">
+      <div>
+        <input type="file" name="files" />
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <button type="submit">수정 완료</button>
+  <a th:href="@{'/article/' + ${article.id}}">취소</a>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+---DTO 설계 기본 원칙------------------
+DTO는 재사용보다 '목적 중심'으로 설계하고, 연관관계는 진짜 필요한 곳에만, 순환참조는 부모 → 자식만 허용하는 방향이 가장 현실적인 해답이다.
+주 요청DTO는 실제요청으로 오는 DTO로만 -  Long articleId, Article관련필드,  ...    attachId  (o),  AttachDTO(X )
+요청별로 만드는게 일반적으로 좋다
+
+응답DTO는 목적별 (Detal,listResponse 등등)
+통합DTO가 아니라 서버 내부용으로 목적에 맞는 DTO를 만드는것.
+
+entity측 :  from~~DTO(), update(~~UpdateDTO)  메소드
+DTO측    :   통일되게 전부 fromEntity(간단한 경우라도),   or 다른DTO로부터 responseDTO만드는 경우도 from~
+
+
+-------------양방향 메소드 -----------------------------------------
+(엔티티에서)
+양방향 연관관계 메소드의 연관관계 메소드는 연관관계 주인이랑 상관없이
+List를 가지고 있는 쪽에서 하기.
+단방향은... 필드 있는데서하면됨.
+
+
+---- 첨부파일 --------------
+첨부파일은 FileUtil에서 처리하는데 controller에서 호출한 다음,
+dto얻은거를 service에 넘겨주자.
+삭제할 때도 ,  Controller:  List<Long> deleteIds  -> service에서 DB삭제 + DTO들 return
+                          DTO     -> FileUtil에서 파일삭제
+어찌됐든 service에서는 파일처리 안하도록. 해당 도메인의 관련 로직만 처리
+
+
+-----------------------페이징검색--------------------
+페이징과 검색: 어차피  목록에서만 사용
+-  시작은 repository패키지 하위에 dynamic만들고  custom, customImpl 만들고(빈등록, 생성자 참고) repository extends custom.
+         + Search~~DTO 만들기(searchType, searchWord +  상태몇개),
+- impl메소드 : BooleanExpression으로
+- 검색 searchType은 String으로 해도 될 듯. 대신 view의 검색 select태그에서 하드코딩
+  ==> 나중에 ENUM으로 하던가..
+- controller에서는 Pageable보다는 page,size 받은 다음  직접 객체생성Math.max(0,page-1). spring제공해주는 converter는 굳이?
+- PagedResponse에서 생성자에서 다시 page+1  ==> 클라이언트한테 줄 때 다시 1페이지부터보도록
+
+
+
+
+-----------------------테스트 -------------------------------------
+
+
+
+

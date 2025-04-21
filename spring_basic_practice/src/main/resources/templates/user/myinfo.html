@@ -1,0 +1,26 @@
+<!-- templates/user/myinfo.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내 정보</title>
+</head>
+<body>
+<h1>내 정보</h1>
+<div>
+  <strong>아이디:</strong> <span th:text="${user.username}"></span><br>
+  <strong>닉네임:</strong> <span th:text="${user.nickname}"></span><br>
+  <strong>이메일:</strong> <span th:text="${user.email}"></span><br>
+</div>
+
+<div>
+  <h3>프로필 이미지</h3>
+  <div th:each="img : ${user.profileImages}">
+    <img th:src="@{'/profile-image/' + ${img.id}}" width="100" height="100" />
+  </div>
+</div>
+
+<br>
+<a th:href="@{'/user/edit'(username=${user.username})}">수정하기</a>
+</body>
+</html>

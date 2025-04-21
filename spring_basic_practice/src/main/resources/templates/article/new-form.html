@@ -1,0 +1,49 @@
+<!-- templates/article/new-form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>게시글 작성</title>
+  <meta charset="UTF-8">
+  <script>
+    // 파일 input 동적으로 추가/삭제
+    function addFileInput() {
+        const fileInputs = document.getElementById("fileInputs");
+        const newInput = document.createElement("div");
+        newInput.innerHTML = `
+            <input type="file" name="files" />
+            <button type="button" onclick="this.parentElement.remove()">삭제</button>
+        `;
+        fileInputs.appendChild(newInput);
+    }
+  </script>
+</head>
+<body>
+
+<h1>게시글 작성</h1>
+
+<form action="/article" method="post" enctype="multipart/form-data">
+  <div>
+    <label>제목</label><br>
+    <input type="text" name="title" required />
+  </div>
+  <br>
+  <div>
+    <label>내용</label><br>
+    <textarea name="content" rows="5" cols="50" required></textarea>
+  </div>
+  <br>
+  <div>
+    <label>첨부파일</label>
+    <button type="button" onclick="addFileInput()">파일 추가</button>
+    <div id="fileInputs">
+      <div>
+        <input type="file" name="files" />
+      </div>
+    </div>
+  </div>
+  <br>
+  <button type="submit">등록</button>
+</form>
+
+</body>
+</html>
