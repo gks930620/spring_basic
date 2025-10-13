@@ -7,6 +7,11 @@
 
 정적자원재시작
 thymeleaf html변경 후 저장만할게 아니라 Ctrl + Shift + F9로 recompile 해줘야함. (첫번째는 좀 느림)
-Settings- advancedSetting,   Build -Complier 부분 옵션 변경해주는거 있음
+Settings- advancedSetting에  Build -Complier 부분 옵션  allow-auto  확인
 서버 실행할 떄 LiveReload server is running on port 35729 가 있다면 liveReload기능은 잘 적용중이라고 보면됨
 
+
+
+
+항상 작업하기전에 현재 작업이 어느 브랜치에서 하고 있는건지 확인 하자.
+pull하기전에 로컬백업.
