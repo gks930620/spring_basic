@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 @Controller
 @RequestMapping("/custom-oauth2/login")
 @RequiredArgsConstructor
@@ -54,5 +53,3 @@ public class Oauth2LoginController {
         return ResponseEntity.ok(Map.of("authorizationUrl", authorizationUrl)); //client에는 카카오 restAPI문서에서 요구하는 형태로!
     }
 }
-
-

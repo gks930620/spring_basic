@@ -8,9 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-
-
-@Getter
 public class CustomUserAccount implements UserDetails, OAuth2User {
     private UserEntity userEntity;
     private final Map<String, Object> attributes; // OAuth2 로그인
@@ -24,6 +21,11 @@ public class CustomUserAccount implements UserDetails, OAuth2User {
     public CustomUserAccount(UserEntity userEntity,  Map<String, Object> attributes) {  //Oauth2로 로그인한 경우
         this.userEntity = userEntity;
         this.attributes=attributes;
+    }
+
+
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
     // userDetails
@@ -76,4 +78,5 @@ public class CustomUserAccount implements UserDetails, OAuth2User {
     public String getProvider(){
         return userEntity.getProvider();
     }
+
 }
