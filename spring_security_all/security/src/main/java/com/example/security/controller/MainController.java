@@ -40,6 +40,6 @@ public class MainController {
     @RequestMapping("/admin")
     @ResponseBody
     public String  admin(){
-        return "권한이없어서 여기에 도달 할 수 없다.";
+        return "따로 admin권한 안해놔서 회원가입 로그인해봤자 여기에 도달 할 수 없다. 403화면보게 될걸";
     }
 }
