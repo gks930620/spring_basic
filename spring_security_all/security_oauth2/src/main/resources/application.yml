@@ -1,0 +1,93 @@
+dotenv:
+  enabled: true  # .env파일설정.    KAKAO_CLIENT_ID 직접 쓰려면 없어도됨.
+spring:
+  datasource:
+    url: jdbc:h2:mem:security
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console: # H2 DB를 웹에서 관리할 수 있는 기능
+      enabled: true           # H2 Console 사용 여부
+      path: /h2-console       # H2 Console 접속 주소
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+  devtools:
+    livereload:
+      enabled: true
+    freemarker:
+      cache: false
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}  # 카카오 REST API 키
+            #client-secret: ${KAKAO_CLIENT_SECRET}  # 선택 (일반적으로 필요 없음)
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao # 카카오 로그인 후 리디렉트될 주소
+            authorization-grant-type: authorization_code  # OAuth2 인증 방식 (코드 방식)
+            scope:
+              - profile_nickname
+              - account_email  # 요청할 사용자 정보 (이메일, 닉네임)
+
+
+          google: # ✅ 구글 OAuth2 추가
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}   #구글은 인가코드- access_token 과정에서 내부적으로 secret을 필요로 함.
+            scope:
+              - profile       #카카오는 profile안의 여러정보 다 따로 지정해줘야하지만 구글은 profile만 지정하면 됨.
+              - email
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize  # 카카오 로그인 URL  (인증서버)
+            token-uri: https://kauth.kakao.com/oauth/token  # 액세스 토큰 요청 URL (인증서버)
+            user-info-uri: https://kapi.kakao.com/v2/user/me  # 사용자 정보 요청 URL (리소스서버)
+            user-name-attribute: id  # OAuth2User에서 사용할 식별 값. 왠만하면 oauth에서 제공하는대로사용하자. 카카오는 id, 구글은 sub
+
+
+
+#          google:  #security 가 구글provider에 대한 정보를 갖고 있어서 추가안해도됨.
+#            authorization-uri: https://accounts.google.com/o/oauth2/auth  # ✅ 인증 서버 (Authorization Server)
+#            token-uri: https://oauth2.googleapis.com/token  # ✅ 액세스 토큰 요청 (Token Server)
+#            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo  # ✅ 사용자 정보 요청 (Resource Server)
+#            user-name-attribute: sub  # ✅ Google의 고유 사용자 ID (sub)
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+
+
+
+
+
+
+
+#    google:
+#      client-id: your-client-id
+#      client-secret: your-client-secret
+#      # 다른 설정들은  이미 설정되어있음   client-authentication-method: client_secret_basic으로 .
+#      # redirect-uri :  http://localhost:8080/login/oauth2/code/google 기본이지만 실제 서비스에서는 변경
+#      # provider의 user-name-attribute도 구글에서 사용하는 유저객체 식별 속성이고 정해져있기 때문에 provider쪽
+#      scope:
+#        - profile
+#        - email

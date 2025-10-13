@@ -42,11 +42,6 @@ Desktop.ini
 # 환경 변수 및 설정 파일 무시 (OAuth2, JWT 관련)
 .env
 *.properties
-*.yml
-*.yaml
-!src/main/resources/application.yml
-!src/main/resources/application.yaml
-!src/main/resources/application.properties
 secret/
 private/
 credentials/
