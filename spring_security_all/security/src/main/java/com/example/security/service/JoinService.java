@@ -3,6 +3,7 @@ package com.example.security.service;
 import com.example.security.entity.UserEntity;
 import com.example.security.model.JoinDTO;
 import com.example.security.repository.UserRepository;
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class JoinService {
         //db에 이미 동일한 username을 가진 회원이 존재하는지?
         UserEntity find = userRepository.findByUsername(joinDTO.getUsername());
         if(find!=null) {
-            System.out.println("이미 있는 ID입니다.");
+            System.out.println("이미 존재하는 ID입니다.");
             return ;
         }
         UserEntity user = new UserEntity();
