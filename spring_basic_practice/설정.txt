@@ -10,3 +10,13 @@ thymeleaf html변경 후 저장만할게 아니라 Ctrl + Shift + F9로 recompil
 Settings- advancedSetting,   Build -Complier 부분 옵션 변경해주는거 있음
 서버 실행할 떄 LiveReload server is running on port 35729 가 있다면 liveReload기능은 잘 적용중이라고 보면됨
 
+
+
+항상 작업하기전에 현재 작업이 어느 브랜치에서 하고 있는건지 확인 하자.
+pull하기전에 로컬백업.
+
+
+query dsl은 없애고 싶으면 build.gradle에 있는 query dsl 관련 코드 전부삭제 
+
+
+

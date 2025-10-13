@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:upload
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+  devtools:
+    livereload:
+      enabled: true
+    freemarker:
+      cache: false
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+file:
+  upload:
+    path: C:\workspace\upload_folder   #로컬경로   환경변수로 하던가 하자.
+
+
