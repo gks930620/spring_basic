@@ -77,7 +77,7 @@ public class SecurityConfig {
                     if (errorCause == null) {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.setContentType("application/json;charset=UTF-8");
-                        response.getWriter().write("{\"error\": \"인증이 필요합니다.\"}");
+                        response.getWriter().write("{\"error\": \"합니다.\"}");
                         return;
                     }
 
