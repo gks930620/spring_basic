@@ -40,6 +40,8 @@ dependencies {
 	implementation 'io.github.cdimascio:dotenv-java:2.2.0'
 
 
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -47,9 +49,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
-
-
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

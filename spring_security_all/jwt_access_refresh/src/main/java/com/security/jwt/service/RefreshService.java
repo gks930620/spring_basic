@@ -3,7 +3,6 @@ package com.security.jwt.service;
 
 import com.security.jwt.JwtUtil;
 import com.security.jwt.entity.RefreshEntity;
-import com.security.jwt.entity.UserEntity;
 import com.security.jwt.repository.RefreshRepository;
 import com.security.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
