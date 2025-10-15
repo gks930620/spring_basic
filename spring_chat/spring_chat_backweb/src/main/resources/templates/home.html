@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+<div id="content"></div>
+
+<script>
+  $(document).ready(function() {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      // 🔹 로그인 안 된 상태
+      $("#content").html(`
+        <h2>로그인이 필요합니다</h2>
+        <button id="goLogin">로그인 페이지로 이동</button>
+      `);
+
+      $("#goLogin").click(function() {
+        window.location.href = "/loginPage";
+      });
+      return;
+    }
+
+    // 🔹 로그인 된 경우 → 토큰 유효성 확인
+    $.ajax({
+      url: "/api/me",
+      method: "GET",
+      headers: { "Authorization": "Bearer " + token },
+      success: function(res) {
+        // 🔸 로그인 확인 완료 → 홈화면에 rooms로 이동하는 링크 표시
+        $("#content").html(`
+          <h2>환영합니다, ${res.username || '사용자'}님 👋</h2>
+          <p><a href="/rooms">👉 방 목록 페이지로 이동</a></p>
+        `);
+      },
+      error: function() {
+        // 🔸 토큰 만료 또는 오류 → 다시 로그인 유도
+        $("#content").html(`
+          <h2>인증 실패. 다시 로그인해주세요.</h2>
+          <button id="goLogin">로그인 페이지로 이동</button>
+        `);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
+        $("#goLogin").click(function() {
+          window.location.href = "/loginPage";
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

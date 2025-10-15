@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+  <!-- ✅ jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+<h2>로그인</h2>
+
+<form id="loginForm">
+  <input type="text" id="username" placeholder="아이디" required />
+  <input type="password" id="password" placeholder="비밀번호" required />
+  <button type="submit">로그인</button>
+</form>
+
+<div id="error"></div>
+
+<script>
+  $(document).ready(function() {
+    $("#loginForm").on("submit", function(e) {
+      e.preventDefault();
+
+      const username = $("#username").val();
+      const password = $("#password").val();
+
+      $.ajax({
+        url: "/login",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ username, password }),
+
+        success: function(res) {
+          // JWT 토큰 저장
+          localStorage.setItem("accessToken", res.access_token);
+          localStorage.setItem("refreshToken", res.refresh_token);
+
+          // 홈으로 이동
+          window.location.href = "/home";
+        },
+
+        error: function(xhr) {
+          let msg = "로그인 실패";
+          if (xhr.responseJSON && xhr.responseJSON.error) {
+            msg = xhr.responseJSON.error;
+          }
+          $("#error").text(msg);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>방 목록</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<h1>방 목록</h1>
+<table border="1" width="400">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>방 이름</th>
+  </tr>
+  </thead>
+  <tbody id="roomTableBody"></tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+          alert("로그인한 사람만 방 목록을 볼 수 있습니다.");
+          window.location.href = "/loginPage";
+          return;
+      }
+
+      $.ajax({
+          url: "/api/rooms",
+          method: "GET",
+          headers: { "Authorization": "Bearer " + token },
+          success: function(rooms) {
+              if (!rooms || rooms.length === 0) {
+                  $("#roomTableBody").html("<tr><td colspan='2'>방이 없습니다.</td></tr>");
+                  return;
+              }
+
+              let html = "";
+              rooms.forEach(room => {
+                  html += `<tr>
+                              <td>${room.id}</td>
+                              <td><a href="/room/${room.id}" class="roomLink" data-id="${room.id}">${room.name}</a></td>
+                           </tr>`;
+              });
+              $("#roomTableBody").html(html);
+          },
+          error: function(xhr) {
+              if (xhr.status === 401) {
+                  alert("인증이 만료되었습니다. 다시 로그인해주세요.");
+                  localStorage.removeItem("accessToken");
+                  localStorage.removeItem("refreshToken");
+                  window.location.href = "/loginPage";
+              } else {
+                  alert("방 목록을 불러오지 못했습니다. (" + xhr.status + ")");
+              }
+          }
+      });
+  });
+</script>
+</body>
+</html>
