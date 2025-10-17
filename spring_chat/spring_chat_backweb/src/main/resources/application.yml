@@ -1,4 +1,9 @@
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   datasource:
     url: jdbc:h2:mem:security
     driver-class-name: org.h2.Driver
@@ -31,8 +36,13 @@ jwt:
   expiration_access: 300000  #5분 테스트용
   expiration_refresh : 600000   #테스트용 10분
 
+
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
     org.springframework.security : DEBUG
+
+
+
