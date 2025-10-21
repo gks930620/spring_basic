@@ -63,7 +63,7 @@ public class SecurityConfig {
                               // Swagger / OpenAPI 문서 및 UI
                               "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
                 ).permitAll()
-                // ws 연결 자체는 http 통신이기때문에 필요. 다만 인증 자체는 ws에서 한게 아니라stomp 첫 연결시에 하는걸로 함.
+                // ws 연결 자체는 http 통신이기때문에 허용. 다만 인증 자체는 ws에서 한게 아니라stomp 첫 연결시에 하는걸로 함.
                 .requestMatchers("/api/me").authenticated()
                 .requestMatchers("/api/rooms", "/api/room/**").authenticated()
                 .requestMatchers("/api/logout").authenticated()  //security 기본 로그아웃 url인 /logout은 사용X

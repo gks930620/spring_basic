@@ -33,7 +33,7 @@ public class ChatController {
         Message<?> msg
         ) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(msg);  //매 새로운 메시지마다 생성됨.
-        Object sessionUser = accessor.getSessionAttributes().get("user");
+        Object sessionUser = accessor.getSessionAttributes().get("user");   
         Authentication auth=(Authentication) sessionUser;
         String username = auth.getName();
         message.setSender(username);
