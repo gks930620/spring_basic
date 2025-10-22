@@ -33,10 +33,10 @@ public class ChatController {
         Message<?> msg
         ) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(msg);  //매 새로운 메시지마다 생성됨.
-        Object sessionUser = accessor.getSessionAttributes().get("user");   
+        Object sessionUser = accessor.getSessionAttributes().get("user");    //interceptor에서 저장한 user
         Authentication auth=(Authentication) sessionUser;
         String username = auth.getName();
         message.setSender(username);
-        messagingTemplate.convertAndSend("/sub/room/" + roomId, message);  //여기에서 해당 방에만..
+        messagingTemplate.convertAndSend("/sub/room/" + roomId, message);  //여기에서 해당 방에만 메시지 전송
     }
 }

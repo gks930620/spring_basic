@@ -83,8 +83,11 @@
       }
     });
 
+
     // ✅ STOMP 연결
     const socket = new SockJS('/ws-chat');
+     //spring 서버의 websocket 엔드포인트 , 이 연결자체는 Http핸드쉐이크  이기때문에 security 설정에 걸림
+      // 이 외의 stomp 연결 주소들은 spring securiy 랑 상관없고  채팅 인터셉터 JwtChannelInterceptor에 걸림
     const stompClient = Stomp.over(socket);
 
     stompClient.connect(
@@ -92,10 +95,12 @@
       function(frame) {
         console.log('Connected: ' + frame);
 
+
+        // 연결 후 현재 채팅방에 websocket 구독
         stompClient.subscribe(`/sub/room/${roomId}`, function(message) {
           let msg;
           try {
-            msg = JSON.parse(message.body);
+            msg = JSON.parse(message.body);   // 서버에서  보낸 데이터를 받아서 파싱
           } catch (e) {
             // 서버에서 단순 문자열 보낼 경우 대비
             msg = { content: message.body };
@@ -135,7 +140,7 @@
       if (msg.trim() === "") return;
 
       stompClient.send(
-        `/pub/room/${roomId}`,
+        `/pub/room/${roomId}`,  //구독자 방에 msg 보내기 , 이  데이터가 ChatController로 가서 Meessage<> msg가 됨
         {},
         JSON.stringify({ content: msg })
       );

@@ -53,5 +53,4 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
         accessor.setUser(authenticationToken);
         return message;
     }
-
 }

@@ -40,6 +40,10 @@ public class WebSocketEventListener {
             // html에   stompClient.subscribe(`/sub/room/${roomId}`  주소랑 같아야함.)
             // 실제 방을 나누는건 html에 stocmClient.subscribe를 통해   Stomp websocket이 방 나누는거고
             // 내 코드는 그 방에 메세지 전달하는 것 뿐
+
+            //ChatController는 sendMessage에서 메시지 보낼 때마다 실행되지만  연결될 때는 실행X
+            //여기는 연결될 때 한번만 실행됨. 한번 실행할 때 입장메세지 보내는 기능일 뿐.
+
         }
     }
 
@@ -56,6 +60,4 @@ public class WebSocketEventListener {
             messagingTemplate.convertAndSend("/sub/room/" + roomId, username + "님이 퇴장했습니다.");
         }
     }
-
-
 }
