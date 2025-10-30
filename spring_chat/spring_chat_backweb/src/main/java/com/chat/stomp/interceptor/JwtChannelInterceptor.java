@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class JwtChannelInterceptor implements ChannelInterceptor {
-
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 

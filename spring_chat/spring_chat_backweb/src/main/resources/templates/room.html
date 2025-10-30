@@ -84,12 +84,20 @@
     });
 
 
+
+
     // ✅ STOMP 연결
     const socket = new SockJS('/ws-chat');
-     //spring 서버의 websocket 엔드포인트 , 이 연결자체는 Http핸드쉐이크  이기때문에 security 설정에 걸림
-      // 이 외의 stomp 연결 주소들은 spring securiy 랑 상관없고  채팅 인터셉터 JwtChannelInterceptor에 걸림
+   //spring 서버의 websocket 엔드포인트 , 이 연결자체는 Http핸드쉐이크  이기때문에 security 설정에 걸림
+    // 이 외의 stomp 연결 주소들은 spring securiy 랑 상관없고  채팅 인터셉터 JwtChannelInterceptor에 걸림
+    // 참고로 SockJS는  websocket이 브라우저 버전 등의 이유로 연결 실패했을 때
+    // HTTP Streamin, Long Polling과 같은 HTTP 기반의 다른 기술로 전환해 다시 연결을 시도하게 하는 것
+    // 연결이 잘 됐다면 하는역할은 new WebSocket()과 동일
+
+
     const stompClient = Stomp.over(socket);
 
+    //promise  async await 쓸걸....
     stompClient.connect(
       { Authorization: "Bearer " + token, "roomId": roomId },
       function(frame) {
