@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <th:block th:replace="~{layout/header :: headerStyle}"></th:block>
+    <th:block th:replace="~{layout/footer :: footerStyle}"></th:block>
+
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            color: #212121;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-header .material-icons {
+            font-size: 32px;
+            color: #6200ea;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 4px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: #6200ea;
+            color: white;
+            box-shadow: 0 2px 4px rgba(98, 0, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #5000ca;
+            box-shadow: 0 4px 8px rgba(98, 0, 234, 0.4);
+        }
+
+        .btn .material-icons {
+            font-size: 18px;
+        }
+
+        .btn-primary .material-icons {
+            color: white;
+        }
+
+        .search-filter-section {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #6200ea;
+        }
+
+        .search-input-wrapper .material-icons {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #757575;
+            font-size: 20px;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: #6200ea;
+        }
+
+        .post-list {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .post-item {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .post-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #212121;
+            margin-bottom: 8px;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #757575;
+        }
+
+        .post-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-meta-item .material-icons {
+            font-size: 16px;
+        }
+
+
+        .post-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 13px
+            color: #757575;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-stat .material-icons {
+            font-size: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .pagination-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pagination-btn.active {
+            background-color: #6200ea;
+            color: white;
+            border-color: #6200ea;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #757575;
+        }
+
+        .empty-state .material-icons {
+            font-size: 80px;
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="~{layout/header :: header}"></th:block>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>
+                <span class="material-icons">forum</span>
+                커뮤니티
+            </h1>
+            <!-- 로그인한 사용자만 글쓰기 버튼 표시 -->
+            <div id="writeButtonContainer" style="display: none;">
+                <a href="/community/write" class="btn btn-primary">
+                    <span class="material-icons">edit</span>
+                    글쓰기
+                </a>
+            </div>
+        </div>
+
+        <div class="search-filter-section">
+            <select class="filter-select" id="searchType">
+                <option value="title">제목</option>
+                <option value="nickname">작성자</option>
+            </select>
+            <div class="search-input-wrapper">
+                <span class="material-icons">search</span>
+                <input type="text" id="searchInput" placeholder="검색어를 입력하세요..." onkeypress="handleSearchKeyPress(event)">
+            </div>
+            <button class="btn btn-primary" onclick="handleSearch()">
+                <span class="material-icons">search</span>
+                검색
+            </button>
+        </div>
+
+        <!-- 로딩 상태 -->
+        <div id="loadingState" style="display: none; text-align: center; padding: 60px 20px; color: #757575;">
+            <div style="font-size: 14px;">로딩 중...</div>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div class="post-list" id="postList">
+            <!-- JavaScript로 동적 생성 -->
+        </div>
+
+        <!-- 빈 상태 -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <span class="material-icons">article</span>
+            <h3>게시글이 없습니다</h3>
+            <p>첫 번째 게시글을 작성해보세요!</p>
+        </div>
+
+        <!-- 페이징 -->
+        <div class="pagination" id="pagination">
+            <!-- JavaScript로 동적 생성 -->
+        </div>
+    </main>
+
+    <th:block th:replace="~{layout/footer :: footer}"></th:block>
+    <th:block th:replace="~{layout/header :: headerScript}"></th:block>
+
+    <script>
+        let currentPage = 0;
+        const pageSize = 10;
+        let currentKeyword = '';
+        let currentSearchType = 'title';
+
+        // 페이지 로드 시 데이터 가져오기
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 페이지 로드 완료 - API 호출 시작');
+            checkLoginStatus(); // 로그인 상태 확인
+            loadCommunityList(0);
+        });
+
+        // 로그인 상태 확인 (API 호출로 정확하게 체크)
+        function checkLoginStatus() {
+            authFetch('/api/my/info')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Not logged in');
+                })
+                .then(result => {
+                    const userInfo = result.data; // ApiResponse에서 data 추출
+                    console.log('✅ 로그인 상태: true, 사용자:', userInfo.nickname);
+                    // 글쓰기 버튼 표시
+                    const writeBtn = document.getElementById('writeButtonContainer');
+                    if (writeBtn) {
+                        writeBtn.style.display = 'block';
+                    }
+                })
+                .catch(err => {
+                    console.log('❌ 로그인 상태: false');
+                    // 글쓰기 버튼 숨김 (기본값이 display: none이므로 생략 가능)
+                });
+        }
+
+        // 커뮤니티 목록 로드
+        async function loadCommunityList(page, searchType = '', keyword = '') {
+            try {
+                showLoading(true);
+                currentPage = page;
+                currentKeyword = keyword;
+                currentSearchType = searchType;
+
+                // 기본 URL
+                let url = `/api/community?page=${page}&size=${pageSize}&sort=createdAt,desc`;
+
+                // 검색 키워드가 있으면 파라미터 추가
+                if (keyword && keyword.trim() !== '' && searchType) {
+                    url += `&searchType=${searchType}&keyword=${encodeURIComponent(keyword)}`;
+                }
+
+                console.log('🔍 API 호출 시작:', url);
+
+                const response = await fetch(url);
+
+                console.log('📡 응답 상태:', response.status, response.statusText);
+
+                if (!response.ok) {
+                    const error = await handleApiError(response);
+                    console.error('❌ API 오류 응답:', error);
+                    throw error;
+                }
+
+                const result = await response.json();
+                const data = result.data; // ApiResponse에서 data 추출
+                console.log('✅ 받은 데이터:', data);
+                console.log('📊 데이터 구조:', {
+                    hasContent: !!data.content,
+                    isArray: Array.isArray(data.content),
+                    contentLength: data.content?.length,
+                    totalElements: data.totalElements,
+                    totalPages: data.totalPages,
+                    page: data.page
+                });
+
+                renderPostList(data.content);
+                renderPagination(data);
+
+                showLoading(false);
+            } catch (error) {
+                console.error('❌ 에러 발생:', error);
+                showLoading(false);
+                // 에러 메시지가 있으면 표시
+                if (error.message && error.status !== 200) {
+                    // 조회 실패 시 빈 상태로 표시 (alert은 너무 공격적)
+                }
+                // 실패 시 빈 상태로 표시
+                renderPostList([]);
+            }
+        }
+
+        // 게시글 목록 렌더링
+        function renderPostList(posts) {
+            console.log('🎨 렌더링 시작:', {
+                posts: posts,
+                isArray: Array.isArray(posts),
+                length: posts?.length,
+                firstPost: posts?.[0]
+            });
+
+            const postList = document.getElementById('postList');
+            const emptyState = document.getElementById('emptyState');
+
+            if (!posts || posts.length === 0) {
+                console.log('📭 게시글 없음 - 빈 상태 표시');
+                postList.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            console.log(`✅ 게시글 ${posts.length}개 렌더링 시작`);
+            postList.style.display = 'block';
+            emptyState.style.display = 'none';
+
+            postList.innerHTML = posts.map(post => `
+                <div class="post-item" onclick="goToDetail(${post.id})">
+                    <div class="post-header">
+                        <div>
+                            <div class="post-title">${escapeHtml(post.title)}</div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="material-icons">person</span>
+                                    <span>${escapeHtml(post.nickname || post.username)}</span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="material-icons">schedule</span>
+                                    <span>${formatRelativeTime(post.createdAt)}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-stats">
+                        <span class="post-stat">
+                            <span class="material-icons">visibility</span>
+                            <span>${post.viewCount || 0}</span>
+                        </span>
+                        <span class="post-stat">
+                            <span class="material-icons">comment</span>
+                            <span>${post.commentCount || 0}</span>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 페이징 렌더링
+        function renderPagination(data) {
+            const pagination = document.getElementById('pagination');
+            const totalPages = data.totalPages;
+            const currentPage = data.page;
+
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+
+            pagination.style.display = 'flex';
+
+            let paginationHTML = '';
+
+            // 이전 버튼
+            paginationHTML += `
+                <button class="pagination-btn" onclick="loadCommunityList(${currentPage - 1}, '${currentSearchType}', '${currentKeyword}')" ${currentPage === 0 ? 'disabled' : ''}>
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            `;
+
+            // 페이지 번호 버튼 (최대 5개 표시)
+            const startPage = Math.max(0, currentPage - 2);
+            const endPage = Math.min(totalPages - 1, startPage + 4);
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="loadCommunityList(${i}, '${currentSearchType}', '${currentKeyword}')">
+                        ${i + 1}
+                    </button>
+                `;
+            }
+
+            // 다음 버튼
+            paginationHTML += `
+                <button class="pagination-btn" onclick="loadCommunityList(${currentPage + 1}, '${currentSearchType}', '${currentKeyword}')" ${currentPage === totalPages - 1 ? 'disabled' : ''}>
+                    <span class="material-icons">chevron_right</span>
+                </button>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // 상세 페이지로 이동
+        function goToDetail(communityId) {
+            location.href = `/community/detail?id=${communityId}`;
+        }
+
+        // 검색 처리
+        function handleSearch() {
+            const searchType = document.getElementById('searchType').value;
+            const keyword = document.getElementById('searchInput').value.trim();
+
+            if (!keyword) {
+                // 검색어 없으면 전체 목록 조회
+                loadCommunityList(0);
+                return;
+            }
+
+            loadCommunityList(0, searchType, keyword);
+        }
+
+        // 엔터키로 검색
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                handleSearch();
+            }
+        }
+
+        // 로딩 상태 표시
+        function showLoading(show) {
+            const loadingState = document.getElementById('loadingState');
+            const postList = document.getElementById('postList');
+            const emptyState = document.getElementById('emptyState');
+
+            if (show) {
+                loadingState.style.display = 'block';
+                postList.style.display = 'none';
+                emptyState.style.display = 'none';
+            } else {
+                loadingState.style.display = 'none';
+            }
+        }
+
+        // 상대 시간 포맷 (예: "2시간 전")
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 1) return '방금 전';
+            if (diffMins < 60) return `${diffMins}분 전`;
+            if (diffHours < 24) return `${diffHours}시간 전`;
+            if (diffDays < 7) return `${diffDays}일 전`;
+
+            return date.toLocaleDateString('ko-KR');
+        }
+
+        // HTML 이스케이프
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
+

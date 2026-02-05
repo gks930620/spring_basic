@@ -5,7 +5,6 @@ import com.example.security.model.CustomUserAccount;
 import com.example.security.model.OAuthProvider;
 import com.example.security.repository.UserRepository;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
